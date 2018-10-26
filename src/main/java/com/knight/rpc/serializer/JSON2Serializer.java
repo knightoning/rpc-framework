@@ -1,6 +1,7 @@
 package com.knight.rpc.serializer;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class JSON2Serializer implements ISerializer {
     /**
@@ -13,7 +14,8 @@ public class JSON2Serializer implements ISerializer {
     public <T> byte[] serialize(T obj) {
 
         JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-        return new byte[0];
+
+        return JSON.toJSONString(obj, SerializerFeature.WriteDateUseDateFormat).getBytes();
     }
 
     /**
@@ -25,6 +27,6 @@ public class JSON2Serializer implements ISerializer {
      */
     @Override
     public <T> T deserialize(byte[] data, Class<T> clazz) {
-        return null;
+        return JSON.parseObject(new String(data),clazz);
     }
 }
